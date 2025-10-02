@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>AIvRealOpniHaskolinnLeikur</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI or alvöru?</title>
+  <style>
+    :root {
+      --bg: #0f172a;          /* slate-900 */
+      --card: #111827;        /* gray-900 */
+      --muted: #94a3b8;       /* slate-400 */
+      --text: #e2e8f0;        /* slate-200 */
+      --brand: #22d3ee;       /* cyan-400 */
+      --accent: #a78bfa;      /* violet-400 */
+      --ok: #34d399;          /* green-400 */
+      --bad: #f87171;         /* red-400 */
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif; background: radial-gradient(1200px 800px at 20% -10%, #1f2937, var(--bg)); color: var(--text); }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 24px; min-height: 100dvh; display: flex; flex-direction: column; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .brand { font-weight: 800; letter-spacing: 0.2px; font-size: 20px; }
+    .brand span { color: var(--brand); }
+    .meta { color: var(--muted); font-size: 14px; }
+
+    .card { background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+
+    .statusbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 22px 0; }
+    .pill { background: rgba(255,255,255,0.06); padding: 8px 12px; border-radius: 999px; font-size: 14px; color: var(--muted); }
+
+    .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .imgcard { position: relative; overflow: hidden; border-radius: 16px; background: #0b1220; border: 1px solid rgba(255,255,255,0.08); cursor: pointer; transition: transform .15s ease, box-shadow .2s ease; }
+    .imgcard:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
+    .imgcard img { width: 100%; height: 360px; object-fit: cover; display: block; filter: saturate(1.05); }
+
+    .label { position: absolute; left: 10px; top: 10px; backdrop-filter: blur(6px); background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.12); color: #e5e7eb; padding: 6px 10px; border-radius: 999px; font-size: 12px; letter-spacing: 0.3px; text-transform: uppercase; }
+
+    .cta { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(90deg, var(--brand), var(--accent)); border: none; padding: 12px 16px; color: #001018; font-weight: 700; border-radius: 12px; cursor: pointer; transition: transform .06s ease; }
+    .cta:active { transform: translateY(1px); }
+    .cta.muted { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid rgba(255,255,255,0.08); font-weight: 600; }
+
+    .feedback { margin: 12px 0 4px; min-height: 28px; font-weight: 700; }
+    .feedback.ok { color: var(--ok); }
+    .feedback.bad { color: var(--bad); }
+
+    .center { text-align: center; }
+
+    .emailbox { display: grid; gap: 10px; max-width: 560px; margin: 0 auto; }
+    .emailbox label { font-size: 14px; color: var(--muted); }
+    .emailbox input[type="email"] { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); color: var(--text); outline: none; }
+    .small { font-size: 12px; color: var(--muted); }
+
+    footer { margin-top: auto; padding-top: 20px; color: var(--muted); font-size: 12px; text-align: center; }
+
+    @media (max-width: 860px) {
+      .imgcard img { height: 42vw; }
+      .gallery { grid-template-columns: 1fr; }
+    }
+
+    /* Render \n in #prompt as line breaks */
+    #prompt { white-space: pre-line; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">AI eða <span>Alvöru?</span></div>
+      <div class="meta" id="meta">Opni Háskólinn</div>
+    </header>
+
+    <div class="card">
+      <div class="statusbar">
+        <div class="pill" id="roundPill">Umferð 1 af 8</div>
+        <div class="pill" id="scorePill">Stig: 0</div>
+      </div>
+
+      <div id="game">
+        <p id="prompt" class="center" style="margin: 8px 0 18px; color: var(--muted)">
+          Hvor myndin er gerð af AI?
+          Smelltu á hana.
+        </p>
+        <div class="gallery">
+          <button class="imgcard" id="leftCard" aria-label="Left image button">
+            <span class="label" id="leftLabel">A</span>
+            <img id="leftImg" alt="Left option" />
+          </button>
+          <button class="imgcard" id="rightCard" aria-label="Right image button">
+            <span class="label" id="rightLabel">B</span>
+            <img id="rightImg" alt="Right option" />
+          </button>
+        </div>
+        <div class="center">
+          <div id="feedback" class="feedback" aria-live="polite"></div>
+          <button id="nextBtn" class="cta muted" style="display:none">Næsta umferð →</button>
+        </div>
+      </div>
+
+      <div id="result" style="display:none">
+        <h2 class="center" style="margin: 0 0 8px">Vel gert! 🎉</h2>
+        <p class="center" style="margin: 0 0 20px; color: var(--muted)">Stig: <strong id="finalScore">0 / 8</strong></p>
+
+        <form id="emailForm" class="emailbox">
+          <label for="email">Skráðu netfangið þitt og þú getur unnið frítt námskeið hjá Opna háskólanum!</label>
+          <input id="email" name="email" type="email" placeholder="you@example.edu" required />
+          <button class="cta" type="submit">Senda inn netfang</button>
+          <p class="small" style="margin: 6px 0 0;">
+            Með því að taka þátt í leiknum samþykkir þú að fá tölvupósta frá Opna háskólanum. Þú getur afskráð þig af listanum hvenær sem er.
+          </p>
+          <p id="submitMsg" class="small" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+
+    <footer>
+      Við söfnum aðeins netfanginu þínu og stigum.
+    </footer>
+  </div>
+
+  <script>
+    /***********************
+     * CONFIGURE HERE
+     ***********************/
+    const ROUNDS = 8;
+
+    // Remove topics: each pair is just { real, ai }
+    const imagePairs = [
+    { real: "https://drive.google.com/thumbnail?id=1UL8lra4zT8ZooRGUpXEfc8JLW73PAAQw&sz=w1600", ai: "https://drive.google.com/thumbnail?id=1zHx9sQ1NQRGZBIrwlnsIGDnTEZwqMC47&sz=w1600" },
+    { real: "https://drive.google.com/thumbnail?id=1ww2UNEVBUD0aClolknwHJBckQWaUwuyF&sz=w1600", ai: "https://drive.google.com/thumbnail?id=1aXlMmwgKtx9VamJOOhiOpWkh7D5zXwY-&sz=w1600" },
+    { real: "https://drive.google.com/thumbnail?id=18t_3k3EiexceGSkxTQQe3_45I-3hMgh8&sz=w1600", ai: "https://drive.google.com/thumbnail?id=1BtLk4na3zHcA_1Z8f7d0a8A6bYftgrRO&sz=w1600" },
+    { real: "https://drive.google.com/thumbnail?id=1xbU_YZd8DOQ4AFgiobMxE2vFbQEmD_Vh&sz=w1600", ai: "https://drive.google.com/thumbnail?id=16aQ-Paxt8GvNMkSnZuIcr53pEmT3MTu4&sz=w1600" },
+    { real: "https://drive.google.com/thumbnail?id=1fl5XJgc5TUTpU56acId65dyw3F5EiEn0&sz=w1600", ai: "https://drive.google.com/thumbnail?id=1I3aN6aJz7_1DvPamZI5dSMny--hheC0C&sz=w1600" },
+    { real: "https://drive.google.com/thumbnail?id=15mPfjjERyWtdgj8BswavwoPwPzIyizb3&sz=w1600", ai: "https://drive.google.com/thumbnail?id=1rL6CoA3Y6cBKRRsFogPM_FM4nDoBVopk&sz=w1600" },
+    { real: "https://drive.google.com/thumbnail?id=1IhV90Lkm-diTCO_FLVZ-O97Eq73TKmgM&sz=w1600", ai: "https://drive.google.com/thumbnail?id=1akVDFEepp_wCBJ1BGaQYrKUTOrKwjIfm&sz=w1600" },
+    { real: "https://drive.google.com/thumbnail?id=1jsc3zXMEV2ZrJCTSFHZULBP3gmibM9yW&sz=w1600", ai: "https://drive.google.com/thumbnail?id=1K-CW5IpVVmHzgri--db4psOUNF5PjdyO&sz=w1600" }
+];
+
+
+    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwW602WB7vDPF4mitoW3CilOOn1QVwmK0SN3YidDgSyc9YBN2kZdOGOK9m4KFKL09ri/exec";
+    const SOURCE_TAG = "ai-or-real-game";
+
+    /***********************
+     * GAME LOGIC
+     ***********************/
+    let round = 0;
+    let score = 0;
+    let deck = [];
+    let picked = false;
+
+    const roundPill = document.getElementById('roundPill');
+    const scorePill = document.getElementById('scorePill');
+    const promptEl = document.getElementById('prompt');
+    const leftCard = document.getElementById('leftCard');
+    const rightCard = document.getElementById('rightCard');
+    const leftImg = document.getElementById('leftImg');
+    const rightImg = document.getElementById('rightImg');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('nextBtn');
+    const game = document.getElementById('game');
+    const result = document.getElementById('result');
+    const finalScore = document.getElementById('finalScore');
+    const submitMsg = document.getElementById('submitMsg');
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function makeDeck() {
+      const pool = [...imagePairs];
+      shuffle(pool);
+      return pool.slice(0, Math.min(ROUNDS, pool.length)).map((pair) => {
+        const aiLeft = Math.random() < 0.5;
+        return { ...pair, aiLeft };
+      });
+    }
+
+    function preloadImages(list) {
+      const urls = [];
+      list.forEach(p => { urls.push(p.real, p.ai); });
+      urls.forEach(u => { const img = new Image(); img.src = u; });
+    }
+
+    function setRoundUI() {
+      roundPill.textContent = `Umferð ${round + 1} af ${deck.length}`;
+      scorePill.textContent = `Stig: ${score}`;
+      const current = deck[round];
+
+      // Two-line prompt without topics
+      promptEl.textContent = 'Hvor myndin er gerð af AI?\nSmelltu á hana.';
+
+      const leftUrl = current.aiLeft ? current.ai : current.real;
+      const rightUrl = current.aiLeft ? current.real : current.ai;
+      leftImg.src = leftUrl; rightImg.src = rightUrl;
+      leftImg.alt = 'Left option';
+      rightImg.alt = 'Right option';
+      feedback.textContent = '';
+      nextBtn.style.display = 'none';
+      picked = false;
+      leftCard.disabled = false; rightCard.disabled = false;
+    }
+
+    function pick(side) {
+      if (picked) return; picked = true;
+      const current = deck[round];
+      const correct = (side === 'left' && current.aiLeft) || (side === 'right' && !current.aiLeft);
+      if (correct) { score++; feedback.textContent = 'Rétt!'; feedback.className = 'feedback ok'; }
+      else { feedback.textContent = 'Úps! Hin myndin var gerð af AI.'; feedback.className = 'feedback bad'; }
+      leftCard.disabled = true; rightCard.disabled = true;
+      nextBtn.style.display = 'inline-flex';
+    }
+
+    function next() {
+      round++;
+      if (round >= deck.length) {
+        // Show result & email capture
+        game.style.display = 'none';
+        result.style.display = 'block';
+        finalScore.textContent = `${score} / ${deck.length}`;
+        return;
+      }
+      setRoundUI();
+    }
+
+    leftCard.addEventListener('click', () => pick('left'));
+    rightCard.addEventListener('click', () => pick('right'));
+    nextBtn.addEventListener('click', next);
+
+    function start() {
+      deck = makeDeck();
+      preloadImages(deck);
+      round = 0; score = 0; picked = false;
+      game.style.display = 'block'; result.style.display = 'none';
+      setRoundUI();
+    }
+
+    // Email submit logic (Apps Script)
+    document.getElementById('emailForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const payload = new URLSearchParams({
+        email,
+        score: String(score),
+        rounds: String(deck.length),
+        source: SOURCE_TAG
+      });
+
+      if (!WEBHOOK_URL) {
+        submitMsg.textContent = "(Demo mode) No storage configured yet. Add your WEBHOOK_URL to save emails.";
+        return;
+      }
+
+      submitMsg.textContent = 'Submitting…';
+      try {
+        const res = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: payload.toString(),
+        });
+        if (res.ok) {
+          submitMsg.textContent = 'Takk! Nú ert þú á listanum.';
+          e.target.reset();
+        } else {
+          submitMsg.textContent = 'Submit failed. Please try again later or talk to a staff member.';
+        }
+      } catch (err) {
+        submitMsg.textContent = 'Network error. Please try again later.';
+      }
+    });
+
+    start();
+  </script>
+</body>
+</html>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>
