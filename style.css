@@ -6,3 +6,278 @@ body {
   .imgcard { position: relative; display: block; width: 100%; padding: 0; border: 0; background: #0b1220; }
   .imgcard * { pointer-events: none; }
 }
+:root {
+        /* Backgrounds */
+        --bg: #f5f5f5; /* soft off-white background */
+        --card: #ffffff; /* white cards */
+
+        /* Text */
+        --text: #404040; /* dark gray main text */
+        --muted: #7a7a7a; /* lighter gray for secondary text */
+
+        /* Brand */
+        --brand: #ff1900; /* iconic brand red */
+        --accent: #43adb5; /* secondary blue */
+
+        /* Feedback */
+        --ok: #2ecc71; /* success */
+        --bad: #e67e22; /* error (distinct from brand red) */
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+          "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .wrap {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 24px;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .brand {
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        font-size: 20px;
+      }
+
+      .brand span {
+        color: var(--brand);
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 14px;
+      }
+     .meta-link {
+  color: var(--brand);          /* brand red */
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Subtle underline appears on hover */
+.meta-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.meta-link:hover::after {
+  opacity: 1;
+}
+
+      .card {
+        background: var(--card);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .statusbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 22px 0;
+      }
+
+      .pill {
+        background: rgba(67, 173, 181, 0.15);
+        color: var(--text);
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 14px;
+        border: 1px solid rgba(67, 173, 181, 0.35);
+      }
+
+      #roundPill,
+      #scorePill {
+        font-weight: 700;
+      }
+
+
+
+      .gallery {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .imgcard {
+        position: relative;
+        overflow: hidden;
+        border-radius: 16px;
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.2s ease;
+        padding: 0;
+      }
+
+      .imgcard:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+      }
+
+      .imgcard img {
+        width: 100%;
+        height: 360px;
+        object-fit: cover;
+        display: block;
+        filter: saturate(1.05);
+      }
+
+      .label {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        backdrop-filter: blur(6px);
+        background: rgba(0, 0, 0, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #e5e7eb;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(90deg, var(--brand), var(--accent));
+        border: none;
+        padding: 12px 16px;
+        color: #ffffff;
+        font-weight: 700;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 0.06s ease;
+      }
+
+      .cta:active {
+        transform: translateY(1px);
+      }
+
+      .cta.muted {
+        background: rgba(67, 173, 181, 0.12);
+        color: var(--text);
+        border: 1px solid rgba(67, 173, 181, 0.35);
+        font-weight: 600;
+      }
+
+      /* Email submit button: blue background, white text */
+      #emailForm .cta {
+        background: var(--accent);
+        box-shadow: 0 6px 16px rgba(67, 173, 181, 0.35);
+        color: #ffffff;
+      }
+
+      #emailForm .cta:hover {
+        background: #3699a0;
+      }
+
+      .feedback {
+        margin: 12px 0 4px;
+        min-height: 28px;
+        font-weight: 700;
+      }
+
+      .feedback.ok {
+        color: var(--ok);
+      }
+
+      .feedback.bad {
+        color: var(--bad);
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      .emailbox {
+        display: grid;
+        gap: 10px;
+        max-width: 560px;
+        margin: 0 auto;
+      }
+
+      .emailbox label {
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      .emailbox input[type="email"] {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: rgba(67, 173, 181, 0.15);
+        border: 1px solid rgba(67, 173, 181, 0.35);
+        color: var(--text);
+        outline: none;
+      }
+
+      .emailbox input[type="email"]::placeholder {
+        color: rgba(64, 64, 64, 0.6);
+      }
+
+      .emailbox input[type="email"]:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px rgba(67, 173, 181, 0.2);
+      }
+
+      .small {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      footer {
+        margin-top: auto;
+        padding-top: 20px;
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+      }
+
+      @media (max-width: 860px) {
+        .imgcard img {
+          height: 42vw;
+        }
+
+        .gallery {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Render \n in #prompt as line breaks */
+      #prompt {
+  font-weight: 700;
+}
